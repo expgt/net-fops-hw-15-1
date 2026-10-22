@@ -17,8 +17,7 @@
 
 1. Репозиторий с ссылкой на зеркало для установки и настройки Terraform: [ссылка](https://github.com/netology-code/devops-materials).
 2. Установка docker: [ссылка](https://docs.docker.com/engine/install/ubuntu/). 
-------
-### Внимание!! Обязательно предоставляем на проверку получившийся код в виде ссылки на ваш github-репозиторий!
+
 ------
 
 ### Задание 1
@@ -35,10 +34,10 @@ result = m51Y8pbuERorSWNn
 
 ![1_3](https://github.com/expgt/net-fops-hw-15-1/blob/main/15_1_1_3.png)
    
-4. Раскомментирован блок кода, расположенный на строчках 29–42 файла **main.tf**.Выполнена команда ```terraform validate```.
+4. Раскомментирован блок кода, расположенный на строчках 29–42 файла **main.tf**. Выполнена команда ```terraform validate```.
 При проверке кода и их поэтапного исправления обнаружены следующие ошибки:
 
-```bash
+```
 │ Error: Missing name for resource
 │ 
 │   on main.tf line 23, in resource "docker_image":
@@ -46,9 +45,9 @@ result = m51Y8pbuERorSWNn
 │ 
 │ All resource blocks must have 2 labels (type, name).
 ```
-Данная ошибка означает, что в блоке resource начинающегося на строке 23 не указано имя ресурса.
+Данная ошибка означает, что в блоке resource, начинающегося на строке 23, не указано имя ресурса.
 
-```bash
+```
 │ Error: Invalid resource name
 │ 
 │   on main.tf line 28, in resource "docker_container" "1nginx":
@@ -56,11 +55,11 @@ result = m51Y8pbuERorSWNn
 │ 
 │ A name must start with a letter or underscore and may contain only letters, digits, underscores, and dashes.
 ```
-Данная ошибка означает, что в блоке resource начинающегося на строке 28 неправильно указано имя ресурса, т.к. оно начинает на цифру.
+Данная ошибка означает, что в блоке resource, начинающегося на строке 28, неправильно указано имя ресурса, т.к. оно начинает на цифру.
 
-После исправления первых двух ошибок и попытки запуска, появляется еще одна.
+После исправления первых двух ошибок и попытки запуска, появляется еще одна:
 
-```bash
+```
 │ Error: Reference to undeclared resource
 │ 
 │   on main.tf line 30, in resource "docker_container" "nginx":
@@ -72,7 +71,7 @@ result = m51Y8pbuERorSWNn
 	
 После исправления данного ресурса на random_password.random_string.resulT появляется ошибка:
 
-```bash
+```
 │ Error: Unsupported attribute
 │ 
 │   on main.tf line 30, in resource "docker_container" "nginx":
@@ -86,7 +85,7 @@ result = m51Y8pbuERorSWNn
 
 Исправленный блок кода:
 
-```bash
+```
 resource "docker_image" "nginx" {
   name         = "nginx:latest"
   keep_locally = true
@@ -122,16 +121,17 @@ resource "docker_container" "nginx" {
 
 8. Docker-образ **nginx:latest** не был удален, т.к. в блоке образа использована опция keep_locally, которая при значении true позволяет сохранить образ в локальном репозитории docker 
 
-```bash
+```
 resource "docker_image" "nginx" {
   name         = "nginx:latest"
   keep_locally = true
 }
 ```
 Документация:
-keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation. 
+```
+keep_locally (Boolean) If true, then the Docker image won't be deleted on destroy operation. If this is false, it will delete the image from the docker local storage on destroy operation.
+```
 [Doc](https://library.tf/providers/kreuzwerker/docker/latest/docs/resources/image#:~:text=keep%5Flocally%20%28Boolean%29%20If%20true%2C%20then%20the%20Docker%20image%20won%27t%20be%20deleted%20on%20destroy%20operation%2E%20If%20this%20is%20false%2C%20it%20will%20delete%20the%20image%20from%20the%20docker%20local%20storage%20on%20destroy%20operation)
-
 
 ---
 
